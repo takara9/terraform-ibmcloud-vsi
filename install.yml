@@ -1,0 +1,9 @@
+#cloud-config
+package_update: true
+packages:
+  - git
+  - python-pip
+runcmd:
+  - pip install ansible\==2.7.7
+
+  
