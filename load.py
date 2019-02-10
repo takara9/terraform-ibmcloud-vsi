@@ -42,6 +42,6 @@ with open(src, mode='a') as f:
     for l in lines:
         f.write(l)
     f.write('[nodes]\n')
-    f.write('{0}[0:{1}]'.format(base_name,n_of_host))
+    f.write('{0}[0:{1}]'.format(base_name,n_of_host-1))
 
 
