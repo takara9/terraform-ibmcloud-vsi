@@ -43,7 +43,7 @@ resource "ibm_compute_ssh_key" "ssh_key" {
   label      = "${var.ssh_label}"
   notes      = "${var.ssh_notes}"
   #public_key = "${var.ssh_key}"
-  public_key = "${file("./keys/key.pub")}"
+  public_key = "${file("/vagrant/keys/key.pub")}"
 }
 
 # https://ibm-cloud.github.io/tf-ibm-docs/v0.14.1/r/compute_vm_instance.html

@@ -1,0 +1,13 @@
+- hosts: nodes
+  connection: ssh
+  become: yes
+  gather_facts: True
+
+  tasks:
+  - name: Test
+    shell: /bin/hostname
+    register: result
+
+  - name: Debug
+    debug: var=result.stdout
+    

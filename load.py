@@ -2,8 +2,10 @@
 # -*- coding:utf-8 -*-                                                          
 #                                                                               
 import json
+import shutil
 
-buf = open('terraform.tfstate.test').read()
+## teraform.tfstate の output を読んで、Ansible の Inventoryファイルを作る
+buf = open('terraform.tfstate').read()
 dic = json.loads(buf)
 m = dic['modules'][0]
 
@@ -18,18 +20,28 @@ for x in m['outputs']['public_ip']['value']:
     public_ip.append(x)
 
     
-priv_key = '/vagrant/.vagrant/machines/node2/virtualbox/private_key'
-form = '{0} ansible_ssh_host={1} ansible_ssh_private_key_file={2}\n'    
+priv_key = 'keys/key'
+form = '{0} ansible_ssh_host={1} ansible_ssh_private_key_file={2} ansible_ssh_user="root"\n'    
+n_of_host = len(hostname)
+bass_name = 'tkr01tf-'
 
-for i in range(0,len(hostname)):
-    #line = '{0} {1}'.format(public_ip[i],hostname[i])
+## ノードデータ作成
+for i in range(0,n_of_host):
     line = form.format(hostname[i], public_ip[i], priv_key)
     lines.append(line)
 
 
-    
-with open('hosts.test', mode='w') as f:
+## インベントリファイルのバックアップ    
+src = './playbooks/hosts'
+dst = './playbooks/hosts.backup'
+shutil.copyfile(src,dst)
+
+
+## Terraformから起動したノードのエントリを追加
+with open(src, mode='a') as f:
     for l in lines:
         f.write(l)
+    f.write('[nodes]\n')
+    f.write('{0}[0:{1}]'.format(base_name,n_of_host))
 
 
