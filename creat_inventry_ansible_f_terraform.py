@@ -20,10 +20,13 @@ for x in m['outputs']['public_ip']['value']:
     public_ip.append(x)
 
     
-priv_key = 'keys/key'
+    
+priv_key = '~/keys/key'
 form = '{0} ansible_ssh_host={1} ansible_ssh_private_key_file={2} ansible_ssh_user="root"\n'    
 n_of_host = len(hostname)
-base_name = 'tkr01tf-'
+#base_name = 'tkr01tf-'
+base_name = m['outputs']['base_name']['value'] + '-'
+
 
 ## ノードデータ作成
 for i in range(0,n_of_host):

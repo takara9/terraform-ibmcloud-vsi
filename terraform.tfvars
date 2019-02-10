@@ -1,11 +1,11 @@
 #sl_username = ""
 #sl_api_key  = ""
 #ic_api_key  = ""
-org_name    = "takara@jp.ibm.com"
-space_name  = "dev"
+#org_name    = ""
+#space_name  = ""
 
 ##
-hostname   = "tkr01tf"
+hostname   = "worker"
 domain     = "takara.org"
 
 ## bx sl vs options
@@ -25,7 +25,7 @@ ssh_notes  = "SSH note"
 #ssh_key    = ""
 
 ## セキュリティ・グループのID
-## bx sl securitygroup list
+# bx sl securitygroup list
 sg1 = "130379" # allow_all
 sg2 = "130381" # allow_outbound
 

@@ -78,3 +78,8 @@ output "hostname" {
   value = "${ibm_compute_vm_instance.vsi.*.hostname}"
 }
 
+output "base_name" {
+  value = "${var.hostname}"
+}
+
+
