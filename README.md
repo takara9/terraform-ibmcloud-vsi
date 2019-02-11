@@ -6,6 +6,7 @@
 
 
 
+
 ## 初期化
 
 ~~~
@@ -15,6 +16,8 @@ $ terraform init -plugin-dir="/usr/local/bin"
 
 
 ## ドライラン
+
+下記の .secret.tfvars は、terraform.tfvars の中から認証情報などを抜き出したものです。
 
 ~~~
 $ terraform plan -var-file=.secret.tfvars
