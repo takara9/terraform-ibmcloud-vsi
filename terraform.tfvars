@@ -1,12 +1,16 @@
+## secret.tfvars の置き換え対象
 #sl_username = ""
 #sl_api_key  = ""
 #ic_api_key  = ""
 #org_name    = ""
 #space_name  = ""
 
-##
-hostname   = "worker"
-domain     = "takara.org"
+## ホストとドメイン名
+hostname   = "node"
+domain     = "sample.org"
+
+## ノード数
+num_of_vsi = "1"
 
 ## bx sl vs options
 datacenter = "tok05"
@@ -20,14 +24,12 @@ tags       = "TF"
 
 ##
 ssh_user   = "root"
-ssh_label  = "takara3"
-ssh_notes  = "SSH note"
-#ssh_key    = ""
+ssh_label  = "key-for-tf"
+ssh_notes  = "Terraform ssh-key"
+#ssh_key    = "" # サーバーに公開鍵を設定する
 
-## セキュリティ・グループのID
+## セキュリティ・グループのIDで Public VLAN とPrivate VLAN のアクセス制御を設定
 # bx sl securitygroup list
 sg1 = "130379" # allow_all
 sg2 = "130381" # allow_outbound
 
-## ノード数
-num_of_vsi = "3"
