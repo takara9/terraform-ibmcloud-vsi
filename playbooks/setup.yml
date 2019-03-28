@@ -17,7 +17,18 @@
 
   - name: Install packages
     apt:
-      name: ['apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'nfs-common']
+      name: [
+      'apt-transport-https',
+      'ca-certificates',
+      'curl',
+      'software-properties-common',
+      'python-minimal',
+      'python-pip',
+      'unzip',
+      'nfs-common',
+      'emacs-nox',
+      'software-properties-common'
+      ]
       state: present
       update_cache: yes
 
@@ -32,3 +43,14 @@
     user:
       name: vagrant
       groups: docker
+
+  ## Install IBM Cloud CLI & SDK
+
+  - name: Install python package by pip
+    pip:
+      name: ansible==2.7.7
+      
+  - name: Installing IBM Cloud CLI, it will takes 300 sec
+      shell: sudo -i -u vagrant curl -sL https://ibm.biz/idt-installer | sudo -i -u vagrant bash
+      args:
+        chdir: /home/vagrant
