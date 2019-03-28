@@ -37,3 +37,18 @@ $ terraform apply -var-file=.secret.tfvars
 $ terraform destroy -var-file=.secret.tfvars
 ~~~
 
+
+## Ansibleのプレイブック適用
+
+
+~~~
+vagrant@workstation:~/ws2$ python 
+.git/             playbooks/        .terraform/       tfstate2hosts.py  
+vagrant@workstation:~/ws2$ python tfstate2hosts.py 
+vagrant@workstation:~/ws2$ ansible -m ping -i playbooks/hosts nodes
+ws2-0 | SUCCESS => {
+    "changed": false, 
+    "ping": "pong"
+}
+vagrant@workstation:~/ws2$ ansible-playbook -i playbooks/hosts playbooks/setup.yml
+~~~
