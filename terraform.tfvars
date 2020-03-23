@@ -10,7 +10,8 @@ hostname   = "node"
 domain     = "sample.org"
 
 ## ノード数
-num_of_vsi = "1"
+num_of_master = "1"
+num_of_node   = "2"
 
 ## bx sl vs options
 datacenter = "tok05"
@@ -32,4 +33,7 @@ ssh_notes  = "Terraform ssh-key"
 # bx sl securitygroup list
 sg1 = "130379" # allow_all
 sg2 = "130381" # allow_outbound
+
+
+
 
