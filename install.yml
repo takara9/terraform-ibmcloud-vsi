@@ -2,8 +2,10 @@
 package_update: true
 packages:
   - git
-  - python-pip
+  - python3-pip
 runcmd:
-  - pip install ansible\==2.7.7
+  - pip3 install ansible\==2.8.10
+  - git clone https://github.com/takara9/okd-test /root/okd-test
+  
 
   
