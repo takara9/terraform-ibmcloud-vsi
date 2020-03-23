@@ -1,0 +1,10 @@
+---
+- name: Set up 
+  hosts: all
+  gather_facts: yes
+  become: yes
+
+  roles:
+    - centos
+    - okd
+    

@@ -1,0 +1,50 @@
+#tasks file
+
+#- debug: msg="{{ ansible_facts }}"
+
+- name: check version
+  debug: msg="CentOS7"
+  when:
+    - ansible_facts.distribution_major_version == "7"
+
+- name: check version
+  debug: msg="CentOS8"
+  when:
+    - ansible_facts.distribution_major_version == "8"
+
+
+# ホスト名とドメイン名
+- name: Set hostname
+  hostname:
+    name: "{{ hostname }}.{{ domain }}"
+
+
+## セキュリティ
+- name: Change selinux
+  selinux:
+    policy: targeted
+    state: permissive
+
+
+## ファイアウオールの停止    
+- name: Stop firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+    
+
+## 必要なソフト
+- name: ensure a list of packages installed
+  yum:
+    name: "{{ packages }}"
+    state: present
+  vars:
+    packages:
+    - bind-utils
+    - net-tools
+    - epel-release
+    - git
+    - yum-utils
+
+    

@@ -1,0 +1,35 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_ssh_user=origin
+ansible_become=true
+#os_firewall_use_firewalld=True
+openshift_deployment_type=origin
+openshift_master_identity_providers=[{'name': 'htpasswd_auth','login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+
+openshift_master_default_subdomain=apps.test.example.com
+openshift_docker_insecure_registries=registry.example.com
+
+#osm_cluster_network_cidr=10.128.0.0/14
+#openshift_portal_net=172.30.0.0/16
+
+                                          
+[masters]
+master.example.com openshift_public_hostname="{{ inventory_hostname }}"
+
+[etcd]
+master.example.com
+
+
+[nodes]
+master.example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-master"
+node[1:2].example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-compute"
+
+
+
+
+
+

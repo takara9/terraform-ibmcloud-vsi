@@ -1,0 +1,4 @@
+# var file
+---
+hostname: "{{ inventory_hostname_short }}"
+domain: example.com

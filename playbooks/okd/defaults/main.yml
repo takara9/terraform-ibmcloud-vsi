@@ -1,0 +1,5 @@
+---
+# vars file for default
+cert_path: /etc/pki/ca-trust/source/anchors/
+cert_src:  /vagrant/certs/ca-cert/
+
