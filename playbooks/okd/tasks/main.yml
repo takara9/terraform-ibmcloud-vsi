@@ -1,6 +1,6 @@
 #tasks file
 
-- debug: msg="{{ ansible_facts }}"
+#- debug: msg="{{ ansible_facts }}"
 #- debug: msg="{{ ansible_facts.nodename }}"
 #- debug: msg="{{ ansible_facts.hostname }}"  
 
@@ -16,38 +16,22 @@
 
 ########################################################
 ## 鍵の作成と配布
-- name: Create .ssh directory
-  file:
-    path: /root/.ssh
-    state: directory
-    owner: root
-    group: root
-    mode: '0700'
-
-#- name: keygen
-#  command: ssh-keygen -t rsa -N '' -f .ssh/id_rsa
-#  args:
-#    chdir: /root
-#  when:
-#    - ansible_facts.hostname == "master"
+#- name: Create .ssh directory
+#  file:
+#    path: /root/.ssh
+#    state: directory
+#    owner: root
+#    group: root
+#    mode: '0700'
 #
-#- name: Copy file in /vagrant
-#  command: cp /root/.ssh/id_rsa.pub /vagrant/id_rsa.pub
-#  when:
-#    - ansible_facts.hostname == "master"
-#- name: Copy file in /vagrant
-#  command: cp /root/.ssh/id_rsa /vagrant/id_rsa
-#  when:
-#    - ansible_facts.hostname == "master"
-
-- name: get id_rsa.pub from workstation
-  copy:
-    src: /home/vagrant/terraform-ibmcloud-vsi/id_rsa.pub
-    dest: /root/.ssh/authorized_keys
-    owner: root
-    group: root
-    mode: '0400'    
-
+#- name: get id_rsa.pub from workstation
+#  copy:
+#    src: /home/vagrant/terraform-ibmcloud-vsi/id_rsa.pub
+#    dest: /root/.ssh/authorized_keys
+#    owner: root
+#    group: root
+#    mode: '0400'    
+#
 #####################################################
 - name: Ensure group "origin" exists
   group:
@@ -72,10 +56,6 @@
     owner: origin
     group: origin
     mode: '0700'
-#- name: Copy file from /vagrant
-#  command: cp /vagrant/id_rsa /home/origin/.ssh/id_rsa
-#  when:
-#    - ansible_facts.hostname == "master"
 - name: ssh config
   template:
     src:  ssh_config.j2
@@ -91,7 +71,6 @@
     group: origin
     mode: '0400'
 #####################################################
-
 ## 必要なソフトのインストール
 - name: ensure a list of packages installed
   yum:
@@ -104,35 +83,13 @@
       - docker
       - git
       - pyOpenSSL
-      #- dnsmasq      
-
+#####################################################
 - name: Start docker
   systemd:
     name: docker.service
     state: started
     enabled: yes
-
-      
-###
-### DNSMasq
-###
-  
-#- name: Add entries for pland OpenShift hostname
-#  template:
-#    src: dnsmasq.conf.j2
-#    dest: /etc/dnsmasq.conf
-#    owner: root
-#    group: root
-#    mode: 0644
-
-#- name: Create dnsmasq.conf
-#  template:
-#    src: resolv.dnsmasq.j2
-#    dest: /etc/resolv.dnsmasq
-#    owner: root
-#    group: root
-#    mode: 0644
-
+#####################################################
 - name: copy hosts
   template:
     src: hosts.j2
@@ -140,49 +97,25 @@
     owner: root
     group: root
     mode: 0644
-    
-#- name: Start dnsmasq
-#  systemd:
-#    name: dnsmasq.service
-#    state: started
-#    enabled: yes
-
-# DNSのリゾルバー設定 （ネームサーバー以外）
-#- name: make sure line 'dns=none' is set in /etc/NetworkManager/NetworkManager.conf
-#  ini_file:
-#    path: /etc/NetworkManager/NetworkManager.conf
-#    state: present
-#    no_extra_spaces: yes
-#    section: main
-#    option: dns
-#    value: none
-#    owner: root
-#    group: root
-#    mode: 0644
-#    backup: yes
-#  notify:
-#    - reload NetworkManager
-#- name: deploy resolv.conf template
-#  template:
-#    src: resolv.conf.j2
-#    dest: /etc/resolv.conf
-#    owner: root
-#    group: root
-#    mode: 0644
-#    backup: yes
-#  notify:
-#    - reload NetworkManager    
-
-
 - name: Clone openshift-ansible
   shell: |
-    if [ ! -d /root/openshift-ansible ]; then
-      git clone https://github.com/openshift/openshift-ansible -b release-3.11 /root/openshift-ansible
+    if [ ! -d openshift-ansible ]; then
+      git clone https://github.com/openshift/openshift-ansible -b release-3.11
     else 
-      cd /root/openshift-ansible
+      cd openshift-ansible
       git pull
     fi
     exit 0
-    
+  become: true
+  become_user: origin
+  args:
+    chdir: /home/origin
+- name: copy invetroy for openshift
+  copy:
+    src: /home/vagrant/terraform-ibmcloud-vsi/playbooks/hosts.openshift3
+    dest: /home/origin/hosts.openshift3
+    owner: origin
+    group: origin
+    mode: '0400'
 
   
