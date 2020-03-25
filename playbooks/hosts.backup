@@ -1,11 +1,11 @@
-master0 ansible_ssh_host=165.192.67.13 ansible_ssh_private_key_file=~/keys/key ansible_ssh_user="root"
-node0 ansible_ssh_host=165.192.67.10 ansible_ssh_private_key_file=~/keys/key ansible_ssh_user="root"
+master ansible_ssh_host=165.192.67.9 ansible_ssh_private_key_file=~/keys/key ansible_ssh_user="root"
 node1 ansible_ssh_host=165.192.67.7 ansible_ssh_private_key_file=~/keys/key ansible_ssh_user="root"
+node2 ansible_ssh_host=165.192.67.5 ansible_ssh_private_key_file=~/keys/key ansible_ssh_user="root"
 
 
 [masters]
-master[0:0]
+master
 
 [nodes]
-node[0:1]
+node[1:2]
 

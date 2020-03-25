@@ -10,26 +10,42 @@ ansible_become=true
 openshift_deployment_type=origin
 openshift_master_identity_providers=[{'name': 'htpasswd_auth','login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 
+
+# define default sub-domain for Master node
 openshift_master_default_subdomain=apps.test.example.com
-openshift_docker_insecure_registries=registry.example.com
 
-#osm_cluster_network_cidr=10.128.0.0/14
-#openshift_portal_net=172.30.0.0/16
+# allow unencrypted connection within cluster
+#openshift_docker_insecure_registries=172.30.0.0/16
 
-                                          
+# Pod Network
+#os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+openshift_use_openshift_sdn=false
+openshift_use_flannel=true
+flannel_interface=eth0
+#osm_cluster_network_cidr: 10.128.0.0/14
+openshift.common.portal_net=172.16.1.1/16
+flannel_min_network=172.16.5.0 
+openshift_node_proxy_mode=iptables
+
+# Operator
+openshift_cluster_monitoring_operator_install=false
+openshift_enable_olm=false
+
+
+
 [masters]
-master.example.com openshift_public_hostname="{{ inventory_hostname }}"
+#master.example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_schedulable=true containerized=false
+master.example.com    openshift_schedulable=true containerized=false
 
 [etcd]
 master.example.com
 
-
 [nodes]
-master.example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-master"
-node[1:2].example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-compute"
+#master.example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-master-infra"
+#node[1:2].example.com openshift_public_hostname="{{ inventory_hostname }}" openshift_node_group_name="node-config-compute"
 
-
-
-
+#master.example.com    openshift_node_group_name="node-config-master-infra"
+master.example.com    openshift_node_group_name="node-config-master"
+node[1:2].example.com openshift_node_group_name="node-config-compute"
 
 

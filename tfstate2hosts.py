@@ -33,7 +33,11 @@ for x in m['public_ip_nodes']['value']:
 
 for x in m['private_ip_nodes']['value']:    
     private_ip.append(x)
-    
+
+
+
+for i in range(0,len(hostname)):
+    print hostname[i], public_ip[i], private_ip[i]
 
 #
 # terraformに続くansibleについてのインベントリファイル作成
@@ -60,10 +64,11 @@ with open(src, mode='w') as f:
         f.write(l)
     f.write('\n\n')
     f.write('[masters]\n')
-    f.write('{0}[0:{1}]'.format("master",len(m['hostname_master']['value'])-1))
+    #f.write('{0}[0:{1}]'.format("master",len(m['hostname_master']['value'])))
+    f.write('{0}'.format("master"))
     f.write('\n\n')
     f.write('[nodes]\n')
-    f.write('{0}[0:{1}]'.format("node",len(m['hostname_nodes']['value'])-1))
+    f.write('{0}[1:{1}]'.format("node",len(m['hostname_nodes']['value'])))
     f.write('\n\n')
 
 #
@@ -77,7 +82,8 @@ form = '{0}    {1}    {1}.{2}\n'
 
 lines_template.append('127.0.0.1   localhost localhost.localdomain\n\n')
 for i in range(0,len(hostname)):
-    line = form.format(private_ip[i], hostname[i], domain)
+    #line = form.format(private_ip[i], hostname[i], domain)
+    line = form.format(public_ip[i], hostname[i], domain)
     lines_template.append(line)
 with open(temp_hosts, mode='w') as f:
     for l in lines_template:

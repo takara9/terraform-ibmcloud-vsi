@@ -63,10 +63,17 @@
     owner: origin
     group: origin
     mode: 0600
-- name: get id_rsa.pub from /vagrant
+- name: get id_rsa.pub from workstation
   copy:
     src: /home/vagrant/terraform-ibmcloud-vsi/id_rsa.pub
     dest: /home/origin/.ssh/authorized_keys
+    owner: origin
+    group: origin
+    mode: '0400'
+- name: get id_rsa from workstation
+  copy:
+    src: /home/vagrant/terraform-ibmcloud-vsi/id_rsa
+    dest: /home/origin/.ssh/id_rsa
     owner: origin
     group: origin
     mode: '0400'
@@ -80,13 +87,22 @@
     packages:
       - centos-release-openshift-origin311
       - epel-release
-      - docker
+      #- docker
       - git
       - pyOpenSSL
+      - NetworkManager
+      - lvm2
+      - flannel
 #####################################################
-- name: Start docker
+#- name: Start docker
+#  systemd:
+#    name: docker.service
+#    state: started
+#    enabled: yes
+#####################################################
+- name: Start NetworkManger
   systemd:
-    name: docker.service
+    name: NetworkManager.service
     state: started
     enabled: yes
 #####################################################
@@ -117,5 +133,41 @@
     owner: origin
     group: origin
     mode: '0400'
+- name: copy ansible.cfg
+  copy:
+    src: /home/vagrant/terraform-ibmcloud-vsi/ansible.cfg
+    dest: /home/origin/ansible.cfg
+    owner: origin
+    group: origin
+    mode: '0400'
+#####################################################
+# このタスクはDockerを導入する前に実行しなければならない
+- name: docker storage setup
+  template:
+    src: docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
+    owner: root
+    group: root
+    mode:  0644
+    backup: yes
+  
+- name: ensure a list of packages installed
+  yum:
+    name: "{{ packages }}"
+    state: latest
+  vars:
+    packages:
+      - docker-1.13.1
+
+# こちらはDockerの機能なので導入後でないと実行できない    
+- name: Globally disable the EPEL
+  command: docker-storage-setup
+
+# Dockerスタート
+- name: Start docker
+  systemd:
+    name: docker.service
+    state: started
+    enabled: yes
 
   

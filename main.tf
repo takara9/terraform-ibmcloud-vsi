@@ -67,12 +67,12 @@ variable "master_node_name" {
 
 variable "master_node_vcpu" {
   type = number
-  default = 2
+  default = 4
 }
 
 variable "master_node_ram" {
   type = number
-  default = 4096
+  default = 16384
 }
 
 variable "master_node_disk" {
@@ -104,12 +104,12 @@ variable "worker_node_name" {
 
 variable "worker_node_vcpu" {
   type = number
-  default = 1
+  default = 2
 }
 
 variable "worker_node_ram" {
   type = number
-  default = 1024
+  default = 8192
 }
 
 variable "worker_node_disk" {
@@ -160,7 +160,8 @@ resource "ibm_compute_ssh_key" "ssh_key" {
 #
 resource "ibm_compute_vm_instance" "master" {
   count                    = var.master_node_num
-  hostname                 = "${var.master_node_name}${count.index}"
+  #hostname                 = "${var.master_node_name}${count.index}"
+  hostname                 = var.master_node_name
   os_reference_code        = var.os_code
   domain                   = var.domain
   datacenter               = var.datacenter
@@ -169,7 +170,7 @@ resource "ibm_compute_vm_instance" "master" {
   private_network_only     = var.private_only
   cores                    = var.master_node_vcpu
   memory                   = var.master_node_ram
-  disks                    = [var.master_node_disk]
+  disks                    = [var.master_node_disk, 100]
   dedicated_acct_host_only = false
   local_disk               = false
   ssh_key_ids              = [ibm_compute_ssh_key.ssh_key.id]
@@ -181,7 +182,7 @@ resource "ibm_compute_vm_instance" "master" {
 
 resource "ibm_compute_vm_instance" "node" {
   count                    = var.worker_node_num
-  hostname                 = "${var.worker_node_name}${count.index}"
+  hostname                 = "${var.worker_node_name}${count.index + 1}"
   os_reference_code        = var.os_code
   domain                   = var.domain
   datacenter               = var.datacenter
@@ -190,7 +191,7 @@ resource "ibm_compute_vm_instance" "node" {
   private_network_only     = var.private_only
   cores                    = var.worker_node_vcpu
   memory                   = var.worker_node_ram
-  disks                    = [var.worker_node_disk]
+  disks                    = [var.worker_node_disk, 100]
   dedicated_acct_host_only = false
   local_disk               = false
   ssh_key_ids              = [ibm_compute_ssh_key.ssh_key.id]
@@ -206,7 +207,7 @@ output "public_ip_master" {
   value = ibm_compute_vm_instance.master.*.ipv4_address
 }
 output "private_ip_master" {
-  value = ibm_compute_vm_instance.node.*.ipv4_address_private
+  value = ibm_compute_vm_instance.master.*.ipv4_address_private
 }
 
 
