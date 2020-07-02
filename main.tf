@@ -1,5 +1,5 @@
 ##
-## https://ibm-cloud.github.io/tf-ibm-docs/v0.14.1/
+## https://cloud.ibm.com/docs/terraform?topic=terraform-manage_resources
 ##
 variable "sl_username" {}
 variable "sl_api_key" {}
@@ -34,7 +34,7 @@ variable "num_of_vsi" {
 }
 
 
-# https://ibm-cloud.github.io/tf-ibm-docs/index.html
+# https://cloud.ibm.com/docs/terraform?topic=terraform-index-of-terraform-resources-and-data-sources
 #
 provider "ibm" {
   iaas_classic_username = var.sl_username
@@ -42,16 +42,15 @@ provider "ibm" {
   ibmcloud_api_key    =   var.ic_api_key
 }
 
-# https://ibm-cloud.github.io/tf-ibm-docs/v0.14.1/d/compute_ssh_key.html
+# https://cloud.ibm.com/docs/terraform?topic=terraform-infrastructure-resources#ssh-key
 #
 resource "ibm_compute_ssh_key" "ssh_key" {
   label      = "$var.ssh_label"
   notes      = "$var.ssh_notes"
-  #public_key = "${file("/vagrant/keys/key.pub")}"
-  public_key = file("/vagrant/keys/key.pub")
+  public_key = file("/home/vagrant/keys/key.pub")
 }
 
-# https://ibm-cloud.github.io/tf-ibm-docs/v0.14.1/r/compute_vm_instance.html
+# https://cloud.ibm.com/docs/terraform?topic=terraform-infrastructure-resources#vm
 #
 resource "ibm_compute_vm_instance" "vsi" {
   count                    = var.num_of_vsi
