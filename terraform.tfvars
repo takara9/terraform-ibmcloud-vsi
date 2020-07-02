@@ -20,7 +20,7 @@ tags       = "TF"
 
 ##
 ssh_user   = "root"
-ssh_label  = "takara3"
+ssh_label  = "test1"
 ssh_notes  = "SSH note"
 #ssh_key    = ""
 
@@ -30,4 +30,4 @@ sg1 = "130379" # allow_all
 sg2 = "130381" # allow_outbound
 
 ## ノード数
-num_of_vsi = "3"
+num_of_vsi = "1"
