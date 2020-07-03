@@ -5,35 +5,33 @@
 このコードの実行は、GitHub [takara9/vagrant-terraform](https://github.com/takara9/vagrant-terraform)で起動する仮想サーバーを前提としています。
 
 
-
-
 ## 初期化
 
 ~~~
 $ cd terraform-ibmcloud-vsi
-$ terraform init -plugin-dir="/usr/local/bin" 
+$ terraform init 
 ~~~
 
 
 ## ドライラン
 
-下記の .secret.tfvars は、terraform.tfvars の中から認証情報などを抜き出したものです。
+下記の secret.tfvars は、terraform.tfvars の中から認証情報などを抜き出したものです。
 
 ~~~
-$ terraform plan -var-file=.secret.tfvars
+$ terraform plan -var-file=secret.tfvars -var-file=terraform.tfvars
 ~~~
 
 
 ## プロビジョニング
 
 ~~~
-$ terraform apply -var-file=.secret.tfvars
+$ terraform apply -var-file=secret.tfvars -var-file=terraform.tfvars
 ~~~
 
 
 ## クリーンナップ
 
 ~~~
-$ terraform destroy -var-file=.secret.tfvars
+$ terraform destroy -var-file=secret.tfvars -var-file=terraform.tfvars
 ~~~
 

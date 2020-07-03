@@ -9,7 +9,7 @@ hostname   = "worker"
 domain     = "takara.org"
 
 ## bx sl vs options
-datacenter = "tok05"
+datacenter = "tok04"
 os_code    = "UBUNTU_16_64"
 vcpu       = "1"
 ram        = "1024"
