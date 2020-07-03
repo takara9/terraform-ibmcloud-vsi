@@ -6,8 +6,9 @@ import shutil
 
 ## teraform.tfstate の output を読んで、Ansible の Inventoryファイルを作る
 buf = open('terraform.tfstate').read()
-dic = json.loads(buf)
-m = dic['modules'][0]
+#dic = json.loads(buf)
+#m = dic['modules'][0]
+m = json.loads(buf)
 
 hostname = []
 public_ip = []
