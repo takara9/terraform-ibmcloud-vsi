@@ -4,7 +4,7 @@
 variable "sl_username" {}
 variable "sl_api_key" {}
 variable "ic_api_key" {}
-variable "ibmcloud_api_key" {}
+#variable "ibmcloud_api_key" {}
 
 ###
 variable "hostname" {}
@@ -21,7 +21,7 @@ variable "tags" {}
 variable "ssh_user" {}
 variable "ssh_label" {}
 variable "ssh_notes" {}
-variable "ssh_key" {}
+#variable "ssh_key" {}
 
 ##
 variable "sg1" {}
